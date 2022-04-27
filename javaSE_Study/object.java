@@ -45,9 +45,9 @@ public class object {
         obj.output();
         object.getStatic();      //用类名调用静态方法
         System.out.println("总数: " + object.title);
-        object.student stu = obj.new student(98);    //生成内部类对象
+        student stu = obj.new student(98);    //生成内部类对象
         System.out.println(stu.value());
-        object.teacher tea = new object.teacher("数学");
+        teacher tea = new teacher("数学");
     }
 
     public void output() {
