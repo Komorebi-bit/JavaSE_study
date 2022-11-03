@@ -8,7 +8,7 @@
  * sin(double x);
  * cos(double x);
  * tan(double x);
- * log(double x);  //自然对数e
+ * com.log(double x);  //自然对数e
  * log10(double x);
  * acos(double x);
  * asin(double x);

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Configuration>
+  <property name="pattern" value="%L %d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36}.%M --> %msg%n"/>
+  <property name="pattern_file" value="%L %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M [%file : %line] --> %msg%n"/>
+  <property name="logPath" value="E:/IDEA-java/1/src/com"/>
+
+  <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <!--
+        对日志输出目标的配置
+        默认：System.out 以黑色字体输出日志
+        设置：System.err 以红色字体输出日志
+     -->
+    <target>
+      System.out
+    </target>
+
+    <!-- 配置日志输出的格式 -->
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${pattern}</pattern>
+    </encoder>
+    <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>info</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>-->
+    <!--
+        日志记录器
+        配置root logger
+        level: 配置日志级别
+     -->
+  </appender>
+  <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+    <!--引入文件位置 -->
+    <file>${logPath}/logback.log</file>
+    <!-- 设置输出格式 -->
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${pattern}</pattern>
+    </encoder>
+  </appender>
+  <!-- 拆分归档 -->
+  <appender name="roll" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${pattern}</pattern>
+    </encoder>
+
+    <!--    <file>${logPath}</file>-->
+    <!-- 指定拆分规则 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- 按照时间和压缩格式声明文件名 压缩格式gz -->
+      <fileNamePattern>${logPath}/roll.%d{yyyy-MM-dd}.log%i.gz</fileNamePattern>
+      <!-- 按照文件大小拆分 -->
+      <maxFileSize>1KB</maxFileSize>
+    </rollingPolicy>
+  </appender>
+
+  <!-- 异步日志 -->
+  <appender name="asyncAppender" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="consoleAppender"/>
+    <includeCallerData>true</includeCallerData>
+  </appender>
+
+
+  <root level="ALL">
+    <!-- 引入appender -->
+    <!--    <appender-ref ref="consoleAppender"/>-->
+    <!--    <appender-ref ref="fileAppender"/>-->
+    <!--    <appender-ref ref="roll"/>-->
+    <appender-ref ref="asyncAppender"/>
+  </root>
+
+  <!-- 自定义log -->
+  <!-- additivity="false" 不继承root logger -->
+  <!--<logger name="com" level="info" additivity="false">
+    <appender-ref ref="consoleAppender"/>
+  </logger>-->
+
+</Configuration>

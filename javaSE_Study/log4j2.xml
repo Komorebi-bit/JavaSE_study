@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- status="info" 日志框架本身的日志级别 -->
+<Configuration status="info" monitorInterval="30">
+  <Properties>
+    <Property name="logPath">E:/IDEA-java/1/src/com</Property>
+  </Properties>
+  <Appenders>
+    <Console name="consoleAppender" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}  [%-5p] [%t] %l --> %m%n"/>
+    </Console>
+
+    <File name="fileAppender" fileName="${logPath}/log4j2.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %M --> %msg%xEx%n"/>
+    </File>
+
+    <!-- 日志拆分 -->
+    <!-- fileName 日志文件的名字
+         filePattern 日志文件拆分后文件的命名规则
+     -->
+    <RollingFile name="rollingFile" fileName="${logPath}/roll.log"
+                              filePattern="${logPath}/$${date:yyyy-MM-dd}/roll-%d{yyyy-MM-dd-HH-mm}-%i.log}">
+      <!-- 日志消息格式 -->
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %M --> %msg%xEx%n"/>
+      <Policies>
+        <!-- 在系统启动时，出发拆分规则，产生一个日志文件 -->
+        <OnStartupTriggeringPolicy/>
+        <!-- 按照文件的大小进行拆分 -->
+        <SizeBasedTriggeringPolicy size="10KB"/>
+        <!-- 按照时间节点进行拆分 -->
+        <TimeBasedTriggeringPolicy/>
+      </Policies>
+      <!-- 在同一目录下文件个数超过，按时间顺序覆盖 -->
+      <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
+
+    <!--<Async name="myAsync">
+      &lt;!&ndash; 将控制台输出做异步操作 &ndash;&gt;
+      <AppenderRef ref="consoleAppender"/>
+    </Async>-->
+
+  </Appenders>
+
+
+  <Loggers>
+
+    <!-- includeLocation="false" 表示去除日志记录中的行号信息 行号非常影响日志记录的效率 -->
+    <!-- 只在com.ko包下类日志打印才异步 -->
+    <!--<AsyncLogger name="com.log" level="trace"
+                  includeLocation="false" additivity="false">
+      &lt;!&ndash; 将控制台输出consoleAppender 设置为异步 &ndash;&gt;
+      <Appender-Ref ref="consoleAppender"/>
+    </AsyncLogger>-->
+
+    <Root level="trace">
+<!--      <AppenderRef ref="consoleAppender"/>-->
+<!--      <AppenderRef ref="fileAppender"/>-->
+      <AppenderRef ref="rollingFile"/>
+<!--      <AppenderRef ref="myAsync"/>-->
+
+    </Root>
+  </Loggers>
+
+</Configuration>
